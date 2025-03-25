@@ -17,19 +17,13 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -66,4 +60,24 @@ class DefaultFirebaseOptions {
     storageBucket: 'animal-help-app-96e6a.firebasestorage.app',
     measurementId: 'G-4FZP9DEED3',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyAB7_n_ryyMj3fxoy62-5zdnBWG83ThF2M',
+    appId: '1:953917883604:web:5e22d1fa54a98b7d036741',
+    messagingSenderId: '953917883604',
+    projectId: 'animal-help-app-96e6a',
+    authDomain: 'animal-help-app-96e6a.firebaseapp.com',
+    storageBucket: 'animal-help-app-96e6a.firebasestorage.app',
+    measurementId: 'G-4FZP9DEED3',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyAdkHhO05uvRHGGWmlNptR54DeInjq5pCE',
+    appId: '1:953917883604:ios:c1a65e3582e4f4a3036741',
+    messagingSenderId: '953917883604',
+    projectId: 'animal-help-app-96e6a',
+    storageBucket: 'animal-help-app-96e6a.firebasestorage.app',
+    iosBundleId: 'com.example.animalApp',
+  );
+
 }
