@@ -2,7 +2,6 @@ import 'package:animal_app/ngo_screen.dart';
 import 'package:animal_app/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:animal_app/class.dart';
-import 'package:animal_app/ind_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -14,6 +13,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String? option;
   bool isObscure = true;
+  final emailcontroller = TextEditingController();
+  final passwordcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   TextFormField(
+                    controller: emailcontroller,
                     decoration: const InputDecoration(
                       hintText: 'Enter your email ID',
                       border: OutlineInputBorder(),
@@ -72,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   TextFormField(
+                    controller: passwordcontroller,
                     obscureText: isObscure,
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
@@ -145,7 +148,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Center(
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () async {
+                            await AuthService().login(
+                                emailAddress: emailcontroller.text.trim(),
+                                password: passwordcontroller.text.trim());
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -183,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           Navigator.push(
                             context,
                             MaterialPageRoute(

@@ -3,8 +3,16 @@ import 'package:animal_app/class.dart';
 import 'package:animal_app/ind_screen.dart';
 import 'package:animal_app/login.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  final emailcontroller = TextEditingController();
+  final passwordcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +117,10 @@ class SignUpScreen extends StatelessWidget {
                 Row(
                   children: [
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                        await AuthService().signup(
+                            emailAddress: emailcontroller.text.trim(),
+                            password: passwordcontroller.text.trim());
                         Navigator.push(
                           context,
                           MaterialPageRoute(
