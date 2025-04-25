@@ -66,6 +66,9 @@ flutter:
     - Assets/images/user.png
     - Assets/images/Upload.jpg
     - Assets/images/animalhelp.jpg
+    - Assets/images/message.jpg
+    - Assets/images/donation.png
+    - Assets/images/adoption.png    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

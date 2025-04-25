@@ -91,7 +91,7 @@ class home extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(6),
                             child: Image.asset(
-                              'Assets/images/animal.png',
+                              'Assets/images/animalhelp.jpg',
                               width: 80,
                               height: 80,
                               fit: BoxFit.cover,
@@ -152,7 +152,7 @@ class home extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(6),
                             child: Image.asset(
-                              'Assets/images/Upload.jpg',
+                              'Assets/images/message.jpg',
                               width: 80,
                               height: 80,
                               fit: BoxFit.cover,
@@ -213,7 +213,7 @@ class home extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(6),
                             child: Image.asset(
-                              'Assets/images/Upload.jpg',
+                              'Assets/images/donation.png',
                               width: 80,
                               height: 80,
                               fit: BoxFit.cover,
@@ -274,7 +274,7 @@ class home extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(6),
                             child: Image.asset(
-                              'Assets/images/Upload.jpg',
+                              'Assets/images/adoption.png',
                               width: 80,
                               height: 80,
                               fit: BoxFit.cover,
