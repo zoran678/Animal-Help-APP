@@ -1,9 +1,13 @@
+import 'package:animal_app/Screens/direct_message.dart';
+import 'package:animal_app/Screens/home.dart';
 import 'package:animal_app/Screens/ngo_screen.dart';
 import 'package:animal_app/Screens/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:animal_app/service/class.dart';
 import 'package:animal_app/Screens/ind_screen.dart';
 import 'package:animal_app/firebase/firebase_options.dart';
+import 'package:animal_app/Screens/direct_message.dart';
+import 'package:animal_app/Screens/home.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -247,9 +251,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => option == 'Individual'
-                                  ? IndividualScreen()
-                                  : NgoScreen(),
+                              builder: (context) =>
+                                  option == 'Individual' ? home() : NgoScreen(),
                             ),
                           );
                         }
