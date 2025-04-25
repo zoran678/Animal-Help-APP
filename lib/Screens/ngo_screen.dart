@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:animal_app/Screens/detail_animal.dart';
 
 class NgoScreen extends StatelessWidget {
-  const NgoScreen({Key? key}) : super(key: key);
+  const NgoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class NgoScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailAnimal(),
+                        builder: (context) => const DetailAnimal(),
                       ),
                     );
                   },
@@ -179,7 +179,7 @@ class NgoScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailAnimal(),
+                        builder: (context) => const DetailAnimal(),
                       ),
                     );
                   },

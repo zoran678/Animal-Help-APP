@@ -6,7 +6,7 @@ import 'package:animal_app/Screens/ind_screen.dart';
 import 'package:animal_app/firebase/firebase_options.dart';
 
 class Chat_Screen extends StatelessWidget {
-  const Chat_Screen({Key? key}) : super(key: key);
+  const Chat_Screen({super.key});
 
   @override
   Widget build(BuildContext context) {

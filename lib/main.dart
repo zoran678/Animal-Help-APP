@@ -1,3 +1,4 @@
+import 'package:animal_app/Screens/ind_screen.dart';
 import 'package:animal_app/firebase/firebase_options.dart';
 import 'package:animal_app/Screens/login.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,6 +8,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
-    MaterialApp(home: LoginScreen()),
+    MaterialApp(home: IndividualScreen()),
   );
 }

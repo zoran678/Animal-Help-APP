@@ -7,7 +7,7 @@ import 'package:animal_app/Screens/ind_screen.dart';
 import 'package:animal_app/firebase/firebase_options.dart';
 
 class home extends StatelessWidget {
-  const home({Key? key}) : super(key: key);
+  const home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class home extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => IndividualScreen(),
+                        builder: (context) => const IndividualScreen(),
                       ),
                     );
                   },
@@ -127,7 +127,7 @@ class home extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Chat_Screen(),
+                        builder: (context) => const Chat_Screen(),
                       ),
                     );
                   },
@@ -188,7 +188,7 @@ class home extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Chat_Screen(),
+                        builder: (context) => const Chat_Screen(),
                       ),
                     );
                   },
@@ -249,7 +249,7 @@ class home extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Chat_Screen(),
+                        builder: (context) => const Chat_Screen(),
                       ),
                     );
                   },

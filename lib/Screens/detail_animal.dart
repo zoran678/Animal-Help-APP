@@ -2,7 +2,7 @@ import 'package:animal_app/service/class.dart';
 import 'package:flutter/material.dart';
 
 class DetailAnimal extends StatelessWidget {
-  const DetailAnimal({Key? key}) : super(key: key);
+  const DetailAnimal({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

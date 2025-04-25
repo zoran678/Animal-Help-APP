@@ -1,7 +1,66 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 
-class IndividualScreen extends StatelessWidget {
-  const IndividualScreen({Key? key}) : super(key: key);
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
+import 'package:mime/mime.dart';
+
+class IndividualScreen extends StatefulWidget {
+  const IndividualScreen({super.key});
+
+  @override
+  State<IndividualScreen> createState() => _IndividualScreenState();
+}
+
+class _IndividualScreenState extends State<IndividualScreen> {
+  XFile? selectedimage;
+  Uint8List? selectedimagebytes;
+
+  final descriptionController = TextEditingController();
+
+  Future<String?> uploadImageToCloudinary(
+      Uint8List imageFile, String filename) async {
+    const cloudName = 'dhwaakhlb';
+    const uploadPreset = 'ResQnow';
+
+    final url =
+        Uri.parse('https://api.cloudinary.com/v1_1/$cloudName/image/upload');
+
+    final request = http.MultipartRequest('POST', url)
+      ..fields['upload_preset'] = uploadPreset
+      ..files.add(http.MultipartFile.fromBytes(
+        'file',
+        imageFile,
+        filename: filename,
+      ));
+
+    final response = await request.send();
+
+    if (response.statusCode == 200) {
+      final resStream = await response.stream.bytesToString();
+      final responseData = json.decode(resStream);
+      return responseData['secure_url'];
+    } else {
+      print("Upload failed: ${response.statusCode}");
+      return null;
+    }
+  }
+
+  Future Uploaddatatofirestore(String imageUrl) async {
+    await FirebaseFirestore.instance.collection("rescue_data").add({
+      // 'uid' : FirebaseAuth.instance.currentUser!.uid,
+      'image': imageUrl,
+      'description': descriptionController.text.trim(),
+      'createdAt': Timestamp.now(),
+      'geoPoint': GeoPoint(84.65, 76.567)
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +94,14 @@ class IndividualScreen extends StatelessWidget {
               children: [
                 // Image with rounded corners
                 GestureDetector(
-                  onTap: () {
-                    // Add image picker functionality
+                  onTap: () async {
+                    final picker = ImagePicker();
+                    final image =
+                        await picker.pickImage(source: ImageSource.gallery);
+                    if (image == null) return;
+                    selectedimage = image;
+                    selectedimagebytes = await image.readAsBytes();
+                    setState(() {});
                   },
                   child: Container(
                     height: 220,
@@ -56,10 +121,12 @@ class IndividualScreen extends StatelessWidget {
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
-                          Image.asset(
-                            'Assets/images/Upload.jpg',
-                            fit: BoxFit.cover,
-                          ),
+                          selectedimagebytes != null
+                              ? Image.memory(selectedimagebytes!)
+                              : Image.asset(
+                                  'Assets/images/Upload.jpg',
+                                  fit: BoxFit.cover,
+                                ),
                           Positioned(
                             right: 12,
                             bottom: 12,
@@ -98,6 +165,7 @@ class IndividualScreen extends StatelessWidget {
                 // Description TextFormField with improved styling
                 TextFormField(
                   maxLines: 8,
+                  controller: descriptionController,
                   decoration: InputDecoration(
                     hintText: 'Add a description of the case...',
                     hintStyle: TextStyle(
@@ -169,8 +237,12 @@ class IndividualScreen extends StatelessWidget {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // Continue functionality
+                    onPressed: () async {
+                      var imagebytes = await selectedimage!.readAsBytes();
+                      final imageUrl = await uploadImageToCloudinary(
+                          imagebytes, selectedimage!.name);
+
+                      await Uploaddatatofirestore(imageUrl!);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF74BCEA),

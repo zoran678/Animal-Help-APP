@@ -5,7 +5,7 @@ import 'package:animal_app/Screens/login.dart';
 import 'package:animal_app/Screens/ngo_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  const SignUpScreen({super.key});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -273,8 +273,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => option == 'Individual'
-                                  ? IndividualScreen()
-                                  : NgoScreen(),
+                                  ? const IndividualScreen()
+                                  : const NgoScreen(),
                             ),
                           );
                         }
