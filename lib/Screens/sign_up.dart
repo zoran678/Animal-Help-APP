@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animal_app/service/class.dart';
-import 'package:animal_app/Screens/ind_screen.dart';
+import 'package:animal_app/Ind_screen/ind_screen.dart';
 import 'package:animal_app/Screens/login.dart';
 import 'package:animal_app/Screens/ngo_screen.dart';
 
