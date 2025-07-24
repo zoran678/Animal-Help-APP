@@ -1,8 +1,11 @@
+import 'package:animal_app/feature/Ind_screen/bottom_navigation.dart';
+import 'package:animal_app/feature/auth/auth_service.dart';
+import 'package:animal_app/feature/ngo_side/bottom_navigation.dart';
+import 'package:animal_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:animal_app/service/class.dart';
-import 'package:animal_app/Ind_screen/ind_screen.dart';
-import 'package:animal_app/Screens/login.dart';
-import 'package:animal_app/Screens/ngo_screen.dart';
+import 'package:animal_app/feature/auth/login.dart';
+import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -16,7 +19,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  String? option = 'Individual';
+  String? option = UserOption.individual;
   bool isObscure = true;
 
   @override
@@ -214,13 +217,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Expanded(
                           child: RadioListTile<String>(
                             title: const Text(
-                              'Individual',
+                              UserOption.individual,
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 15,
                               ),
                             ),
-                            value: 'Individual',
+                            value: UserOption.individual,
                             groupValue: option,
                             activeColor: const Color(0xFF74BCEA),
                             contentPadding: EdgeInsets.zero,
@@ -234,13 +237,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Expanded(
                           child: RadioListTile<String>(
                             title: const Text(
-                              'Organization',
+                              UserOption.organisation,
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 15,
                               ),
                             ),
-                            value: 'Organization',
+                            value: UserOption.organisation,
                             groupValue: option,
                             activeColor: const Color(0xFF74BCEA),
                             contentPadding: EdgeInsets.zero,
@@ -258,44 +261,57 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 40),
 
                   // Submit Button
-                  SizedBox(
-                    width: double.infinity,
-                    height: 54,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          // If form is valid, login
-                          AuthService().signup(
-                            emailAddress: emailController.text,
-                            password: passwordController.text,
-                          );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => option == 'Individual'
-                                  ? const IndividualScreen()
-                                  : const NgoScreen(),
-                            ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF74BCEA),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                  Consumer<AuthService>(builder: (context, provider, _) {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 54,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            // If form is valid, login
+                            final res = await provider.signup(
+                              emailAddress: emailController.text.trim(),
+                              password: passwordController.text.trim(),
+                              name: nameController.text.trim(),
+                              userType: option!,
+                            );
+                            if (context.mounted) {
+                              if (res) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        option == UserOption.individual
+                                            ? const AppBottomNavigation()
+                                            : const AppNGOBottomNavigation(),
+                                  ),
+                                );
+                              } else {
+                                showAppSnackBar(context,
+                                    'Smth went wrong, please try again later.',
+                                    backgroundColor: Colors.red);
+                              }
+                            }
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF74BCEA),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 2,
                         ),
-                        elevation: 2,
-                      ),
-                      child: const Text(
-                        'Create Account',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                        child: const Text(
+                          'Create Account',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
 
                   const SizedBox(height: 40),
 

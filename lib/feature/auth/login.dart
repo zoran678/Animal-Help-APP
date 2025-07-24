@@ -1,24 +1,22 @@
-import 'package:animal_app/Ind_screen/direct_message.dart';
-import 'package:animal_app/Ind_screen/home.dart';
-import 'package:animal_app/Screens/ngo_screen.dart';
-import 'package:animal_app/Screens/sign_up.dart';
+import 'package:animal_app/feature/Ind_screen/bottom_navigation.dart';
+import 'package:animal_app/feature/ngo_side/bottom_navigation.dart';
+import 'package:animal_app/feature/ngo_side/ngo_recent_cases_list_page.dart';
+import 'package:animal_app/feature/auth/auth_service.dart';
+import 'package:animal_app/feature/auth/sign_up.dart';
+import 'package:animal_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:animal_app/service/class.dart';
-import 'package:animal_app/Ind_screen/ind_screen.dart';
-import 'package:animal_app/firebase/firebase_options.dart';
-import 'package:animal_app/Ind_screen/direct_message.dart';
-import 'package:animal_app/Ind_screen/home.dart';
+import 'package:animal_app/feature/Ind_screen/home.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
-  String? option = 'Individual';
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String? option;
   bool isObscure = true;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -180,101 +178,54 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   const SizedBox(height: 16),
 
-                  // Radio Options
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: const Color(0xFFE0E0E0)),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: RadioListTile<String>(
-                            title: const Text(
-                              'Individual',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15,
-                              ),
-                            ),
-                            value: 'Individual',
-                            groupValue: option,
-                            activeColor: const Color(0xFF74BCEA),
-                            contentPadding: EdgeInsets.zero,
-                            onChanged: (value) {
-                              setState(() {
-                                option = value;
-                              });
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          child: RadioListTile<String>(
-                            title: const Text(
-                              'Organization',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15,
-                              ),
-                            ),
-                            value: 'Organization',
-                            groupValue: option,
-                            activeColor: const Color(0xFF74BCEA),
-                            contentPadding: EdgeInsets.zero,
-                            onChanged: (value) {
-                              setState(() {
-                                option = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
                   const SizedBox(height: 40),
 
                   // Login Button
-                  SizedBox(
-                    width: double.infinity,
-                    height: 54,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          // If form is valid, login
-                          AuthService().login(
-                            emailAddress: emailController.text.trim(),
-                            password: passwordController.text.trim(),
-                          );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => option == 'Individual'
-                                  ? const home()
-                                  : const NgoScreen(),
-                            ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF74BCEA),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                  Consumer<AuthService>(builder: (context, provider, _) {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 54,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            // If form is valid, login
+                            final res = await provider.login(
+                              emailAddress: emailController.text.trim(),
+                              password: passwordController.text.trim(),
+                            );
+                            if (context.mounted) {
+                              if (res == UserOption.individual) {
+                                navigateTo(
+                                    context, const AppBottomNavigation());
+                              } else if (res == UserOption.organisation) {
+                                navigateTo(
+                                    context, const AppNGOBottomNavigation());
+                              } else {
+                                showAppSnackBar(context,
+                                    'Smth went wrong, please try again later.',
+                                    backgroundColor: Colors.red);
+                              }
+                            }
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF74BCEA),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 2,
                         ),
-                        elevation: 2,
-                      ),
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
 
                   const SizedBox(height: 40),
 

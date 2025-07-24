@@ -1,4 +1,3 @@
-import 'package:animal_app/service/class.dart';
 import 'package:flutter/material.dart';
 
 class DetailAnimal extends StatelessWidget {
