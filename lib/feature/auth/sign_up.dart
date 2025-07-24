@@ -3,7 +3,7 @@ import 'package:animal_app/feature/auth/auth_service.dart';
 import 'package:animal_app/feature/ngo_side/bottom_navigation.dart';
 import 'package:animal_app/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:animal_app/service/class.dart';
+import 'package:animal_app/style/styling.dart';
 import 'package:animal_app/feature/auth/login.dart';
 import 'package:provider/provider.dart';
 
